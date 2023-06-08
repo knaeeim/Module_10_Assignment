@@ -1,38 +1,39 @@
-const product = require("../model/model");
+const Product = require("../model/model");
+const User = require("../model/user");
 
 exports.createProduct = async (req, res) => {
-    try{
-        const {name, price } = req.body;
-        if(!name){
-            return res.json({ msg: "Please input the valid data"})
+    try {
+        const {name, price} = req.body;
+        if (!name || !price) {
+            return res.json({msg: "Please input the valid data"})
         }
-        if(!price){
-            return res.json({ msg: "Please input the valid data"})
+
+        const existingName = await Product.findOne({name});
+        if (existingName) {
+            return res.json({msg: "Product Name is already exist in database"})
         }
-        const existingName = await product.findOne({ name });
-        if(existingName){
-            return res.json({ msg: "Product Name is already exist in database"})
-        }
-        const products = await new product({
-            name, price
+
+        const createdProduct = await new Product({
+            name,
+            price,
         }).save();
 
-        res.json(products)
-
-    } catch (error){
-        res.status(500).json({ error: "Internal Server Error"});
+        res.json(createdProduct);
+    } catch (error) {
+        res.status(500).json({error: "Internal Server Error"});
         console.log(error);
     }
 }
 
 exports.getProducts = async (req, res) => {
-  try {
-      const products = await product.find({}, "name price");
+    try {
+        // Fetch products created by the specific user
+        const products = await Product.find({}, "name price");
 
-      res.json(products);
-  } catch (error){
-      res.status(500).json({ error: "Internal Server Error"});
-      console.log(error);
-  }
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({error: "Internal Server Error"});
+        console.log(error);
+    }
 
 }
