@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const {createProduct, getProducts} = require('../controller/controller');
+const {createProduct, getProducts} = require('../controller/ProductController');
 
 const {createNewUser, login} = require("../controller/UserController");
 

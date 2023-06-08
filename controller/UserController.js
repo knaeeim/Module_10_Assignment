@@ -1,4 +1,4 @@
-const User = require("../model/user");
+const User = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const {hashPassword, comparePassword} = require("../helper/auth");
 const {generateToken} = require('../utilities/generateToken')
@@ -35,7 +35,7 @@ exports.createNewUser = async (req, res) => {
             password: hashedPassword,
         }).save();
 
-        const token = generateToken({_id: user._id});
+        const token = generateToken({_id: user._id, name:user.name});
 
         res.json({
             user: {

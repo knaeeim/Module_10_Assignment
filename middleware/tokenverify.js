@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const Product = require("../model/model");
+const Product = require("../model/ProductModel");
 
 const authenticate = (req, res, next) => {
     const bearerToken = req.headers["authorization"];
@@ -11,13 +11,15 @@ const authenticate = (req, res, next) => {
 
     const bear = bearerToken.split(" ");
     const token = bear[1];
-    req.token = token;
+    // req.token = token;
 
-    jwt.verify(req.token, process.env.JWT_SECRET, (err, decode) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
         if (err) {
             return res.status(401).json({msg: "Error verifying token"});
         }
-        req.decode = decode;
+        const {_id, name} = decode;
+        req.headers._id = _id;
+        req.headers.name = name;
         next();
     });
 };
