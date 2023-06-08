@@ -27,7 +27,7 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        // Fetch products created by the specific user
+
         const products = await Product.find({}, "name price");
 
         res.json(products);
