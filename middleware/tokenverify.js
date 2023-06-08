@@ -6,7 +6,7 @@ const authenticate = (req, res, next) => {
     const bearerToken = req.headers["authorization"];
 
     if (!bearerToken) {
-        return res.status(401).json({msg: "Missing token"});
+        return res.status(401).json({msg: "Unauthorized"});
     }
 
     const bear = bearerToken.split(" ");
